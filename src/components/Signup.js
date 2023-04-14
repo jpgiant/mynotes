@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Signup = () => {
+const Signup = (props) => {
   const navigate = useNavigate();
   const [newUser, setNewUser] = useState({
     name: "",
@@ -29,12 +29,18 @@ const Signup = () => {
     });
     const json = await response.json();
     console.log(json);
-    localStorage.setItem("token", json.authtoken);
-    navigate("/");
+    if (json.success) {
+      localStorage.setItem("token", json.authtoken);
+      navigate("/");
+      props.showAlert("Account Created Successfully", "success");
+    } else {
+      props.showAlert("Invalid Credentials", "danger");
+    }
   };
 
   return (
     <div className="container">
+      <h1 className="mb-3">Sign Up to continue</h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="name" className="form-label">

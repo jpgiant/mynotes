@@ -1,6 +1,11 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 const Navbar = () => {
+  const navigate = useNavigate();
+  const signOutButtonAction = () => {
+    localStorage.removeItem("token");
+    navigate("/signin");
+  };
   return (
     <>
       <nav className="navbar navbar-dark navbar-expand-lg bg-dark">
@@ -33,14 +38,28 @@ const Navbar = () => {
                 </NavLink>
               </li>
             </ul>
-            <form className="d-flex" role="button">
-              <NavLink className="btn btn-primary" role="button" to={"/signin"}>
-                Sign In
-              </NavLink>
-              <NavLink className="btn btn-primary mx-3" role="button" to={"/signup"}>
-                Sign Up
-              </NavLink>
-            </form>
+            {!localStorage.getItem("token") ? (
+              <form className="d-flex" role="button">
+                <NavLink
+                  className="btn btn-primary"
+                  role="button"
+                  to={"/signin"}
+                >
+                  Sign In
+                </NavLink>
+                <NavLink
+                  className="btn btn-primary mx-3"
+                  role="button"
+                  to={"/signup"}
+                >
+                  Sign Up
+                </NavLink>
+              </form>
+            ) : (
+              <button className="btn btn-primary" onClick={signOutButtonAction}>
+                Sign Out
+              </button>
+            )}
           </div>
         </div>
       </nav>

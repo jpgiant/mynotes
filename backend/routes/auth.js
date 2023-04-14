@@ -4,7 +4,7 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 var jwt = require("jsonwebtoken");
 const { body, validationResult } = require("express-validator");
-const fetchUser=require("../middleware/fetchUser")
+const fetchUser = require("../middleware/fetchUser");
 
 const jwt_secret = "Aabcd@fdfdfd34";
 
@@ -18,7 +18,7 @@ router.post(
     body("password", "Password must be 5 characters long").isLength({ min: 5 }),
   ],
   async (req, res) => {
-    let success=false
+    let success = false;
     // res.send(req.body)
     // console.log(req.body);
     // const user = User(req.body);
@@ -53,7 +53,7 @@ router.post(
 
       const authtoken = jwt.sign(data, jwt_secret);
       // console.log(authtoken)
-      success=true
+      success = true;
       res.json({ success, authtoken });
       // .then((user) => res.json(user))
       // .catch((e) => {
@@ -77,7 +77,7 @@ router.post(
   async (req, res) => {
     //If error exists, return the error array
     const errors = validationResult(req);
-    let success=false
+    let success = false;
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
@@ -85,14 +85,14 @@ router.post(
     try {
       let user = await User.findOne({ email: email });
       if (!user) {
-        success=false
+        success = false;
         return res
           .status(400)
-          .json({ success,error: "Please try with correct credentials" });
+          .json({ success, error: "Please try with correct credentials" });
       }
       const comparePassword = await bcrypt.compare(password, user.password);
       if (!comparePassword) {
-        success=false
+        success = false;
         return res
           .status(400)
           .json({ success, error: "Please try with correct credentials" });
@@ -105,7 +105,7 @@ router.post(
 
       const authtoken = jwt.sign(data, jwt_secret);
       // console.log(authtoken)
-      success=true
+      success = true;
       res.json({ success, authtoken });
     } catch (error) {
       console.log(error);
@@ -119,7 +119,7 @@ router.post("/getuser", fetchUser, async (req, res) => {
   try {
     const userId = req.user.id;
     const user = await User.findById(userId).select("-password");
-    res.send(user)
+    res.send(user);
   } catch (error) {
     console.log(error);
     res.status(500).send("Sorry! Some error has occurred");

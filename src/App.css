@@ -37,11 +37,10 @@
   }
 }
 
-#crudIconStyle{
+#crudIconStyle {
   color: black;
-
 }
 
-#crudIconStyle:hover{
-  color: grey ;
+#crudIconStyle:hover {
+  color: grey;
 }

@@ -4,9 +4,8 @@ import { faTrash, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import NoteContext from "../context/notes/NoteContext";
 
 const NoteItem = (props) => {
-  const { note, showEditModal,setModalDetails } = props;
-  const { deleteNote, editNote, } = useContext(NoteContext);
-  
+  const { note, showEditModal, setModalDetails, showAlert } = props;
+  const { deleteNote, editNote } = useContext(NoteContext);
 
   return (
     <div className="col-md-3">
@@ -20,20 +19,21 @@ const NoteItem = (props) => {
               style={{ fontSize: "20px" }}
               onClick={() => {
                 deleteNote(note._id);
+                showAlert("Note Deleted Successfully", "success");
               }}
-              // className="mx-2"
             />
           </a>
-          <a id="crudIconStyle" onClick={()=>{
-            showEditModal(note)
-            console.log(note) 
-            // setModalDetails(note)
-            }}>
+          <a
+            id="crudIconStyle"
+            onClick={() => {
+              showEditModal(note);
+              console.log(note);
+            }}
+          >
             <FontAwesomeIcon
               icon={faPenToSquare}
               style={{ fontSize: "20px" }}
               className="mx-2"
-             
             />
           </a>
         </div>
