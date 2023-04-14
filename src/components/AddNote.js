@@ -8,7 +8,7 @@ const AddNote = () => {
   const handleClick = (e) => {
     e.preventDefault();
     addNote(note);
-    setNote({ title: "", description: "", tag: "" })
+    setNote({ title: "", description: "", tag: "" });
   };
 
   const onChange = (e) => {
@@ -30,6 +30,8 @@ const AddNote = () => {
             name="title"
             value={note.title}
             onChange={onChange}
+            minLength={5}
+            required
           />
         </div>
         <div className="form-group mb-3">
@@ -42,6 +44,8 @@ const AddNote = () => {
             name="description"
             value={note.description}
             onChange={onChange}
+            minLength={5}
+            required
           />
         </div>
         <div className="form-group mb-3">
@@ -54,9 +58,20 @@ const AddNote = () => {
             name="tag"
             value={note.tag}
             onChange={onChange}
+            required
           />
         </div>
-        <button type="submit" className="btn btn-primary" onClick={handleClick}>
+        <button
+          type="submit"
+          className="btn btn-primary"
+          disabled={
+            note.title.length < 5 ||
+            note.description.length < 5 ||
+            note.tag.length === 0
+          }
+          
+          onClick={handleClick}
+        >
           Add Note
         </button>
       </form>

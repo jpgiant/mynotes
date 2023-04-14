@@ -5,8 +5,8 @@ import AddNote from "./AddNote";
 
 const Notes = () => {
   const ref = useRef(null);
-  const refClose=useRef(null)
-  const { notes,getAllNotes, editNote } = useContext(NoteContext);
+  const refClose = useRef(null);
+  const { notes, getAllNotes, editNote } = useContext(NoteContext);
   const [note, setNote] = useState({
     id: "",
     editTitle: "",
@@ -21,8 +21,8 @@ const Notes = () => {
   const handleClick = (e) => {
     e.preventDefault();
     // setNote({ title: "", description: "", tag: "" });
-    editNote(note)
-    refClose.current.click()
+    editNote(note);
+    refClose.current.click();
   };
 
   const onChange = (e) => {
@@ -48,6 +48,7 @@ const Notes = () => {
         data-bs-toggle="modal"
         data-bs-target="#exampleModal"
         ref={ref}
+        style={{ visibility: "hidden" }}
       >
         Launch demo modal
       </button>
@@ -85,6 +86,8 @@ const Notes = () => {
                     name="editTitle"
                     value={note.editTitle}
                     onChange={onChange}
+                    minLength={5}
+                    required
                   />
                 </div>
                 <div className="form-group mb-3">
@@ -97,6 +100,8 @@ const Notes = () => {
                     name="editDescription"
                     value={note.editDescription}
                     onChange={onChange}
+                    minLength={5}
+                    required
                   />
                 </div>
                 <div className="form-group mb-3">
@@ -109,6 +114,7 @@ const Notes = () => {
                     name="editTag"
                     value={note.editTag}
                     onChange={onChange}
+                    required
                   />
                 </div>
               </form>
@@ -118,15 +124,19 @@ const Notes = () => {
                 type="button"
                 className="btn btn-secondary"
                 data-bs-dismiss="modal"
-                ref={refClose}                
+                ref={refClose}
               >
                 Close
               </button>
               <button
                 type="submit"
                 className="btn btn-primary"
+                disabled={
+                  note.editTitle.length < 5 ||
+                  note.editDescription.length < 5 ||
+                  note.editTag.length === 0
+                }
                 onClick={handleClick}
-                
               >
                 Edit Note
               </button>
@@ -134,9 +144,11 @@ const Notes = () => {
           </div>
         </div>
       </div>
-
-      <div className="row my-3">
+      <div className="container row my-3">
         <h1>Your Notes</h1>
+        <div className="container">
+          {notes.length === 0 && "No Notes to display"}
+        </div>
         {notes.map((note) => {
           return (
             <NoteItem
